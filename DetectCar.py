@@ -9,6 +9,8 @@ cap = cv2.VideoCapture("car.mp4")
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fps = int(cap.get(cv2.CAP_PROP_FPS))
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+out = cv2.VideoWriter('output_with_count.mp4', fourcc, fps, (width, height))
 
 # Counting car variables
 car_count = 0
@@ -71,9 +73,14 @@ while cap.isOpened():
     # Show the frame with detections and tracking results
     cv2.imshow('Car', frame)
 
+    # Write the frame to the output file
+    out.write(frame)
+    cv2.imshow('Car', frame)
+
     # Exit press 'q'
     if cv2.waitKey(25) & 0xFF == ord('q'):
         break
 
 cap.release()
+out.release()
 cv2.destroyAllWindows()
